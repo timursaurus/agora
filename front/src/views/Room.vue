@@ -1,12 +1,21 @@
 <template>
-  <div>
-      <h1>Room page</h1>
-  </div>
+    <div>
+        <Nav />
+        <div>
+          
+        </div>
+    </div>
 </template>
 
 <script>
+import Nav from '@/components/Nav'
 export default {
+    data(){
 
+    },
+    components: {
+        Nav,
+    }
 }
 </script>
 
