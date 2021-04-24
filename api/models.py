@@ -1,6 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
-# Create your models here.
+import uuid, string, random
+
+
+def gencode():
+    k = 8
+    while True:
+        code = ''.join(random.choices(string.ascii_uppercase, k=k))
+        if Room.objects.filter(code=code).count() == 0:
+            break
+
+    return code
+
 
 class BaseModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -10,25 +21,42 @@ class BaseModel(models.Model):
         abstract = True
 
 
+class Category(BaseModel):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        verbose_name_plural = 'Categories'
+        verbose_name = 'Category'
+
+    def __str__(self):
+        return self.name
+
+
 class Room(BaseModel):
+
+    options = (
+        ('public', 'Public'),
+        ('private', 'Private')
+    )
+
+    class PublicRooms(models.Manager):
+        def get_queryset(self):
+            return super().get_queryset().filter(privacy='public')
+
     title = models.CharField(max_length=255)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, default='off-topic')
     host = models.ForeignKey(User, on_delete=models.CASCADE, related_name='room_host')
-    private = models.BooleanField(null= False, default = False)
+    privacy = models.CharField(max_length=10, choices=options, default='public')
     description = models.TextField(blank=True)
+    code = models.CharField(max_length=8, default='' , unique=True)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+
+    objects = models.Manager()
+    public_rooms = PublicRooms()
 
     class Meta:
         verbose_name_plural = 'Rooms'
+        verbose_name = 'Room'
 
     def __str__(self):
         return self.title
-
-
-#class Listener(models.Model):
-    #room = models.ForeignKey(Room, on_delete=models.PROTECT)
-    #listeners = models.ManyToManyField(User,on_delete=models.CASCADE)
-
-
-#class Speaker(models.Model):
-    #room = models.ForeignKey(Room, on_delete=models.PROTECT)
-    #speakers = models.ManyToManyField(User, on_delete=models.CASCADE)
-    
