@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 
 
 class UserManager(BaseUserManager):
-    def create_superuser(self, email, user_name, display_name, password, **other_fields):
+    def create_superuser(self, email, username, display_name, password, **other_fields):
         other_fields.setdefault('is_staff', True)
         other_fields.setdefault('is_superuser', True)
         other_fields.setdefault('is_active', True)
@@ -15,16 +15,16 @@ class UserManager(BaseUserManager):
         if other_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must be assigned to is_superuser=True.')
 
-        return self.create_user(email, user_name, display_name, password, **other_fields)
+        return self.create_user(email, username, display_name, password, **other_fields)
 
 
-    def create_user(self, email, user_name, display_name, password, **other_fields):
+    def create_user(self, email, username, display_name, password, **other_fields):
 
         if not email:
             raise ValueError(_('Email is required'))
 
         email = self.normalize_email(email)
-        user = self.model(email=email, user_name=user_name, display_name=display_name, **other_fields )
+        user = self.model(email=email, username=username, display_name=display_name, **other_fields )
         user.set_password(password)
         user.save()
         return user
@@ -33,7 +33,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(_('email'), unique=True)
-    user_name = models.CharField(max_length=50, unique=True)
+    username = models.CharField(max_length=50, unique=True)
     display_name = models.CharField(max_length=50, blank=True)
     about = models.TextField(_('about'), max_length=500, blank=True)
     is_staff = models.BooleanField(default=False)
@@ -43,8 +43,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['user_name', 'display_name']
+    REQUIRED_FIELDS = ['username', 'display_name']
 
     def __str__(self):
-        return self.user_name
+        return self.username
     
