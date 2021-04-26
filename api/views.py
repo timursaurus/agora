@@ -3,17 +3,29 @@ from rest_framework.decorators import api_view
 from rest_framework import generics
 from . models import Room, Category
 from . serializers import RoomSerializer, CategorySerializer
+from rest_framework.permissions import SAFE_METHODS, IsAuthenticated, IsAuthenticatedOrReadOnly, BasePermission, IsAdminUser, DjangoModelPermissions
+
+
+class RoomUserWritePermission(BasePermission):
+    message = 'Editing rooms is restricted to the host only.'
+
+    def has_object_permission(self, request, view, obj):
+
+        if request.method in SAFE_METHODS:
+            return True
+
+        return obj.host == request.username
 
 
 class RoomList(generics.ListCreateAPIView):
+    permission_class = [DjangoModelPermissions]
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
-    pass
 
-class RoomInside(generics.RetrieveDestroyAPIView):
+class RoomInside(generics.RetrieveUpdateDestroyAPIView, RoomUserWritePermission):
+    permission_class = [RoomUserWritePermission]
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
-    pass
 
 class CategoryList(generics.ListCreateAPIView):
     queryset = Category.objects.all()
