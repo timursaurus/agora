@@ -24,7 +24,9 @@ export default {
     name: 'Signup',
     data() {
         return{
+            email: '',
             username: '',
+            display_name: '',
             password: '',
             ver_password: '',
             errors: []
@@ -53,7 +55,7 @@ export default {
                 }
 
                 HTTP.post('', data).then(res => {
-                    
+                    console.log(res)
                 })
             }
 

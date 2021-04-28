@@ -1,18 +1,25 @@
 import axios from 'axios'
+// import store from '@/store'
 
-const baseURL = 'http://localhost:8080/api/'
+const baseURL = 'http://127.0.0.1:8000/'
 
-let req = {
+// const HTTP = axios.create({
+//     baseURL: baseURL,
+//     timeout: 5000,
+//     headers: {
+// 		Authorization: localStorage.getItem('access_token')
+// 			? 'JWT ' + localStorage.getItem('access_token')
+// 			: null,
+// 		'Content-Type': 'application/json',
+// 		accept: 'application/json',
+// 	},
+// })
+
+const HTTP = axios.create({
     baseURL: baseURL,
     timeout: 5000,
-    headers: {
-		Authorization: localStorage.getItem('access_token')
-			? 'JWT ' + localStorage.getItem('access_token')
-			: null,
-		'Content-Type': 'application/json',
-		accept: 'application/json',
-	},
+    // headers: { "Authorization": `bearer ${store.state.accessToken}` },
+})
 
-}
 
-export const HTTP = axios.create(req)
+export default HTTP

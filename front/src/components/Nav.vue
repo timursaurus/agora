@@ -3,7 +3,9 @@
         <div class="container mx-auto px-16">
             <div class="grid grid-cols-12 py-2 ">
                 <div class='col-span-3 block w-40 flex items-center '>
-                    <h1 class='text-white text-3xl'>Agora</h1>
+                    <router-link to='/' >
+                        <h1 class='text-white text-3xl'>Agora</h1>
+                    </router-link>
                 </div>
                 <div class='col-span-6 block' >
                     <div class="relative">
@@ -14,7 +16,15 @@
                     </div>
                 </div>
                 <div class='col-span-3 flex justify-end items-center' >
-                    <h1 class='text-white text-2xl' >Login</h1>
+                    <router-link to='/signin' >
+                        <!-- <h1  class='text-white text-2xl' >Login</h1> -->
+                        <div class='text-white bg-red-200 ' v-if='!isAuthenticated' >
+                            <button>Sign in</button>
+                        </div>
+                    </router-link>
+                    <span v-if="isAuthenticated">           
+                        <a class='text-white' href="#" @click.prevent="SignOut">Sign out</a>
+                    </span>
                 </div>
             </div>
         </div>
@@ -22,12 +32,24 @@
 </template>
 
 <script>
-export default {
-    data() {
-        return{
+import store from "@/store";
+// import { computed } from "vue";
 
+
+export default {
+    name: 'Nav',
+    setup() {
+        return {
+            
+            SignOut: () => store.dispatch('SignOut')
         }
     },
+    computed: {
+        isAuthenticated(){
+            return this.$store.getters.isAuthenticated
+        }
+    }
+    
     
 }
 

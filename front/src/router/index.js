@@ -4,6 +4,18 @@ import NotFound from '@/views/NotFound'
 import Home from '@/views/Home'
 import Signin from '@/views/Signin'
 import Signup from '@/views/Signup'
+import Profile from '@/views/Profile'
+//import Signout from '@/views/Signout'
+import store from '@/store'
+
+const authGuard = (to, from, next) => {
+    if (store.getters.isAuthenticated) {
+      next();
+    } else {
+      next("/signin")
+    }
+  };
+
 
 const routes = [
     {
@@ -15,6 +27,7 @@ const routes = [
         path: '/room/:code',
         name: 'Room',
         component: Room,
+        beforeEnter: authGuard
     },
     {
         path: '/:catchAll(.*)',
@@ -31,6 +44,13 @@ const routes = [
         name: 'Signin',
         component: Signin,
     },
+    {
+        path: '/profile',
+        name: 'Profile',
+        component: Profile,
+        beforeEnter: authGuard
+    },
+    
 ]
 
 const router = createRouter({
