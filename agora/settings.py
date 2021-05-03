@@ -29,7 +29,9 @@ INSTALLED_APPS = [
     'api',
     'users',
     'rest_framework',
-    'rest_framework.authtoken',
+    #'rest_framework.authtoken'
+    'djoser',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 MIDDLEWARE = [
@@ -125,9 +127,13 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],
-    'DEFAULT_AUTHENTICATION_CLASSES': (
+    # 'DEFAULT_PARSER_CLASSES': [
+    #     'rest_framework.parsers.JSONParser'
+    # ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+        'rest_framework.authentication.SessionAuthentication'
+    ]
 }
 
 SIMPLE_JWT = {

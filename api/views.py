@@ -3,34 +3,45 @@ from rest_framework.decorators import api_view
 from rest_framework import generics
 from . models import Room, Category
 from . serializers import RoomSerializer, CategorySerializer
-from rest_framework.permissions import SAFE_METHODS, IsAuthenticated, IsAuthenticatedOrReadOnly, BasePermission, IsAdminUser, DjangoModelPermissions
+from rest_framework import permissions 
+from rest_framework.exceptions import PermissionDenied
+# import SAFE_METHODS, IsAuthenticated, IsAuthenticatedOrReadOnly, BasePermission, IsAdminUser, DjangoModelPermissions
 
 
-class RoomUserWritePermission(BasePermission):
-    message = 'Editing rooms is restricted to the host only.'
-
+class isHost(permissions.BasePermission):
+    
+    message = 'You can\'t edit someone\'s else room lol'
     def has_object_permission(self, request, view, obj):
+        return obj.host == request.user
 
-        if request.method in SAFE_METHODS:
-            return True
+class CreateRoom(generics.CreateAPIView):
+    permission_class = permissions.IsAuthenticated
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
 
-        return obj.host == request.username
+
+class EditRoom(generics.RetrieveUpdateDestroyAPIView, isHost):
+    permission_classes = (permissions.IsAuthenticated, isHost)
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
 
 
-class RoomList(generics.ListCreateAPIView):
+class RoomList(generics.ListAPIView):
     # permission_class = [DjangoModelPermissions]
-    permission_class = (IsAuthenticated,)
+    permission_class = permissions.IsAuthenticatedOrReadOnly
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
 
-class RoomInside(generics.RetrieveUpdateDestroyAPIView, RoomUserWritePermission):
 
-    permission_class = (RoomUserWritePermission,)
-    # permission_class = (IsAuthenticated,)
+class RoomInside(generics.RetrieveAPIView):
+    permission_class = permissions.IsAuthenticated
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
+    
 
 class CategoryList(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+
 

@@ -9,11 +9,8 @@ const store = createStore({
     },
     mutations: {
         setToken: (state, model) => {
-            // console.log('SetTOKENed')
-            // console.log('MODEL', model)
             state.accessToken = model.access
             state.refreshToken = model.refresh
-            //console.log(state.refreshToken)
         },
         clearToken: (state) => {
             state.accessToken = null
@@ -21,26 +18,20 @@ const store = createStore({
         }
     },
     getters: {
-        // isAuthenticated: (state) => state.accessToken.length > 0 && state.refreshToken.length > 0,
-
         isAuthenticated (state) {
-            return state.accessToken != null
+            return state.accessToken != null && state.refreshToken != null
         }
 
     },
-
     actions: {
         SignIn: async ({ commit }, model) => {
-            console.log('STARTED')
             HTTP.post('api/token/', model)
             .then((res) => {
                 commit('setToken', res.data)
-                console.log('RES DATA', res.data)
             })
         },
         SignOut: ({ commit }) => {
             commit('clearToken')
-            console.log('CLEAREd')
         }
     }
 })

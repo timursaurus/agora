@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework import routers
-from .views import RoomList, RoomInside, CategoryList
+from .views import RoomList, RoomInside, CategoryList, EditRoom, CreateRoom
 
 
 # router = routers.DefaultRouter()
@@ -10,7 +10,9 @@ from .views import RoomList, RoomInside, CategoryList
 urlpatterns = [
     path('room/', RoomList.as_view(), name='room-list'),
     path('room/<str:pk>', RoomInside.as_view(), name='room-inside'),
-    path('category/', CategoryList.as_view(), name='category-list'),
+    path('room/edit/<str:pk>', EditRoom.as_view(), name='room-edit'),
+    path('room/create/', CreateRoom.as_view(), name='room-create'),
+    path('category/', CategoryList.as_view(), name='category-list')
 ]
 
 

@@ -8,9 +8,6 @@
 export default {
     name: 'Profile',
 
-    created() {
-        
-    }
 }
 </script>
 
