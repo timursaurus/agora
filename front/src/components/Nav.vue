@@ -125,10 +125,13 @@ export default {
             
         },
         Defaults(){
-            this.hints = ['@user', '#category']
-            this.rooms = []
-            this.users = []
-            this.categories = []
+            setTimeout(() => {
+                this.hints = ['@user', '#category']
+                this.rooms = []
+                this.users = []
+                this.categories = []
+            }, 300)
+            
         }
     },
     mounted() {
