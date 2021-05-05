@@ -3,8 +3,10 @@ from rest_framework.decorators import api_view
 from rest_framework import generics
 from . models import Room, Category
 from . serializers import RoomSerializer, CategorySerializer
-from rest_framework import permissions 
+from rest_framework import permissions, filters
 from rest_framework.exceptions import PermissionDenied
+from users.models import User
+from users.serializers import UserSerializer
 # import SAFE_METHODS, IsAuthenticated, IsAuthenticatedOrReadOnly, BasePermission, IsAdminUser, DjangoModelPermissions
 
 
@@ -31,7 +33,8 @@ class RoomList(generics.ListAPIView):
     permission_class = permissions.IsAuthenticatedOrReadOnly
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
-
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['^title']
 
 class RoomInside(generics.RetrieveAPIView):
     permission_class = permissions.IsAuthenticated
@@ -42,6 +45,12 @@ class RoomInside(generics.RetrieveAPIView):
 class CategoryList(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['^name']
 
-
-
+class UserList(generics.ListAPIView):
+    permission_class = permissions.IsAuthenticatedOrReadOnly
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['^username']

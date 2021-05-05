@@ -26,7 +26,18 @@ const routes = [
         path: '/room/:code',
         name: 'Room',
         component: Room,
-        beforeEnter: authGuard
+        props: true,
+        // beforeEnter: (to, from, next) => {
+        //     function isValid (param) {
+        //         console.log(param)
+        //     }
+          
+        //     if (!isValid(to.params.code)) {
+        //         next({ name: '404' });
+        //     }
+          
+        //     else next();
+        // }
     },
     {
         path: '/:catchAll(.*)',

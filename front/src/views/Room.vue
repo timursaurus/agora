@@ -1,20 +1,21 @@
 <template>
     <div>
-        <Nav />
         <div>
-          
+            <h1>INSIDE ROOM {{ code }} </h1>
         </div>
     </div>
 </template>
 
 <script>
-import Nav from '@/components/Nav'
 export default {
+    props: ['code',],
     data(){
-
+        return {
+            // code: this.$route.params.code
+        }
     },
     components: {
-        Nav,
+        
     }
 }
 </script>

@@ -47,11 +47,11 @@ class Room(BaseModel):
 
 
     title = models.CharField(max_length=255)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT, default='off-topic')
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, default='')
     host = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='room_host')
     privacy = models.CharField(max_length=10, choices=options, default='public')
     description = models.TextField(blank=True)
-    code = models.CharField(max_length=8, default=gencode , unique=True)
+    code = models.CharField(primary_key=True, max_length=8, default=gencode , unique=True)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
 
     objects = models.Manager()
@@ -63,10 +63,12 @@ class Room(BaseModel):
 
     def __str__(self):
         return self.title
+    
+    # def host_name(self):
+    #     return self.host_name
 
-
-    def category_name(self):
-        return self.category.name
+    # def category_name(self):
+    #     return self.category_name
 
 
    

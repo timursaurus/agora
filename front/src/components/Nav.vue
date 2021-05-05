@@ -15,14 +15,33 @@
                         <input 
                         @focus='searchmode = !searchmode'
                         @blur='searchmode = !searchmode; Defaults()'
+                        @input='Search'
                         @change='Search'
                         v-model='search'
                         class='z-20 relative w-full text-gray-200 bg-nicegray-light pr-8 rounded-md h-12 px-4 focus:outline-none text-lg placeholder-gray-400' placeholder='Search' type="text">
                         <transition name='fade' mode="out-in" >
                             <div v-show='searchmode' class=' z-10 w-full my-1 py-1 rounded-md text-gray-200 text-lg bg-nicegray-light absolute bg-opacity-50 backdrop-filter backdrop-blur filter drop-shadow ' >
-                                <ul>
-                                    <li v-for='suggestion in suggestions' :key=suggestion class='py-1 rounded-md cursor-pointer duration-200 px-4 hover:text-nicegray-dark hover:bg-gray-400' > {{ suggestion }} </li>
+                                <ul v-for='hint in hints' :key=hint >
+                                    <li class='py-1 rounded-md cursor-pointer duration-200 px-4 hover:text-nicegray-dark hover:bg-gray-400' >
+                                        {{ hint }} 
+                                    </li>
                                 </ul>
+                                <ul v-for='room in rooms' :key=room >
+                                    <li class='py-1 rounded-md cursor-pointer duration-200 px-4 hover:text-nicegray-dark hover:bg-gray-400' > 
+                                        {{room.title }} 
+                                    </li>
+                                </ul>
+                                <ul v-for='user in users' :key=user >
+                                    <li class='py-1 rounded-md cursor-pointer duration-200 px-4 hover:text-nicegray-dark hover:bg-gray-400' > 
+                                        @{{user.username }} 
+                                    </li>
+                                </ul>
+                                <ul v-for='category in categories' :key=category >
+                                    <li class='py-1 rounded-md cursor-pointer duration-200 px-4 hover:text-nicegray-dark hover:bg-gray-400' > 
+                                        #{{category.name }} 
+                                    </li>
+                                </ul>
+
                             </div>
                         </transition>
                     </div>
@@ -45,14 +64,17 @@
 
 <script>
 import store from "@/store";
-
+import HTTP from '@/api'
 export default {
     name: 'Nav',
     data() {
         return {
             search: '',
-            suggestions: [],
-            searchmode: false
+            searchmode: false,
+            hints: ['@user', '#category'],
+            rooms: [],
+            users: [],
+            categories: []
         }
     },
     setup() {
@@ -68,20 +90,45 @@ export default {
     methods: {
         Search() {
             if (this.search[0] == '@'){
-                console.log('Searching for users')
-                this.suggestions = []
+                if (this.search.length > 1) {
+                    HTTP.get('/api/user/?search=' + this.search.slice(1))
+                    .then((res) => {
+                        this.hints = []
+                        this.users = res.data 
+                    })
+                } else {
+                    this.users = []
+                }
             }
             else if (this.search[0] == '#'){
-                console.log('Searching for categories')
-                this.suggestions = []
+                if (this.search.length > 1) {
+                    HTTP.get('/api/category/?search=' + this.search.slice(1))
+                    .then((res) => {
+                        this.hints = []
+                        this.categories = res.data
+                    })
+                } else {
+                    this.categories = []
+                }
             }
-            else {
-                console.log('Regular search')
+            else if (this.search.length >= 1) {
+                HTTP.get('/api/room/?search=' + this.search)
+                .then((res) => {
+                    this.hints = []
+                    this.rooms = res.data
+                })
+                
+            }
+            else if (this.search.length < 1) {
+                this.Defaults()
             }
             
         },
         Defaults(){
-            this.suggestions = ['@user search', '#category search']
+            this.hints = ['@user', '#category']
+            this.rooms = []
+            this.users = []
+            this.categories = []
         }
     },
     mounted() {
@@ -116,6 +163,8 @@ export default {
 .fade-leave-active {
     transition: all 0.2s ease-out;
 }
+
+
 
 
 </style>

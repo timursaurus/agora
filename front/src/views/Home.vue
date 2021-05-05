@@ -1,17 +1,16 @@
 <template>
     <div>
-        <Nav />
         <Filters />
         <div>
-            <h1>bla</h1>
+            <Rooms />
         </div>
         <Footer />
     </div>
 </template>
 
 <script>
-import Nav from '@/components/Nav'
 import Filters from '@/components/Filters'
+import Rooms from '@/components/Rooms'
 import Footer from '@/components/Footer'
 export default {
     name: 'Home',
@@ -19,8 +18,8 @@ export default {
 
     },
     components: {
-        Nav,
         Filters,
+        Rooms,
         Footer,
     }
 }
