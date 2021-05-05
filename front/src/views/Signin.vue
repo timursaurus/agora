@@ -1,6 +1,5 @@
 <template>
-    <div class='min-h-screen' >
-        <Nav />
+    <div class='' >
         <div>
             <form @submit.prevent='onSubmit()' class='bg-white py-8 px-6 shadow rounded-lg'>
                 <div>
@@ -33,7 +32,6 @@
 <script>
 import { reactive } from 'vue'
 import store from '@/store'
-import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 
 export default {
@@ -61,7 +59,6 @@ export default {
         }
     },
     components: {
-        Nav,
         Footer,
 
     },
