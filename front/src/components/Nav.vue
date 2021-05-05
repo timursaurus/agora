@@ -97,17 +97,7 @@ export default {
     },
     methods: {
         Search() {
-            if (this.search.length < 1) {
-                this.Defaults()
-            }
-            else if (this.search.length >= 1) {
-                HTTP.get('/api/room/?search=' + this.search)
-                .then((res) => {
-                    this.hints = []
-                    this.rooms = res.data
-                })
-            }
-            else if (this.search[0] == '@'){
+            if (this.search[0] == '@'){
                 if (this.search.length > 1) {
                     HTTP.get('/api/user/?search=' + this.search.slice(1))
                     .then((res) => {
@@ -128,7 +118,18 @@ export default {
                 } else {
                     this.categories = []
                 }
-            }  
+            }
+            else if (this.search.length >= 1) {
+                HTTP.get('/api/room/?search=' + this.search)
+                .then((res) => {
+                    this.hints = []
+                    this.rooms = res.data
+                })
+                
+            }
+            else if (this.search.length < 1) {
+                this.Defaults()
+            }
             
         },
         Defaults(){
