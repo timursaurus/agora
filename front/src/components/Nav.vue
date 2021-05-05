@@ -20,25 +20,34 @@
                         v-model='search'
                         class='z-20 relative w-full text-gray-200 bg-nicegray-light pr-8 rounded-md h-12 px-4 focus:outline-none text-lg placeholder-gray-400' placeholder='Search' type="text">
                         <transition name='fade' mode="out-in" >
-                            <div v-show='searchmode' class=' z-10 w-full my-1 py-1 rounded-md text-gray-200 text-lg bg-nicegray-light absolute bg-opacity-50 backdrop-filter backdrop-blur filter drop-shadow ' >
+                            <div v-show='searchmode' class=' z-10 w-full my-1 rounded-md text-gray-200 text-lg bg-nicegray-light absolute bg-opacity-50 backdrop-filter backdrop-blur filter drop-shadow ' >
                                 <ul v-for='hint in hints' :key=hint >
                                     <li class='py-1 rounded-md cursor-pointer duration-200 px-4 hover:text-nicegray-dark hover:bg-gray-400' >
                                         {{ hint }} 
                                     </li>
                                 </ul>
                                 <ul v-for='room in rooms' :key=room >
-                                    <li class='py-1 rounded-md cursor-pointer duration-200 px-4 hover:text-nicegray-dark hover:bg-gray-400' > 
-                                        {{room.title }} 
+                                    <li class='py-1 flex items-center justify-between rounded-md cursor-pointer duration-200 px-4 hover:text-nicegray-dark hover:bg-gray-400' >
+                                        <p>{{room.title }}</p> 
+                                        <p class='text-sm right-0'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="opacity-50 hover:opacity-100 pl-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                         </p>
                                     </li>
                                 </ul>
                                 <ul v-for='user in users' :key=user >
-                                    <li class='py-1 rounded-md cursor-pointer duration-200 px-4 hover:text-nicegray-dark hover:bg-gray-400' > 
-                                        @{{user.username }} 
+                                    <li class='py-1 flex items-center justify-between rounded-md cursor-pointer duration-200 px-4 hover:text-nicegray-dark hover:bg-gray-400' > 
+                                        <p>@{{user.username }}</p>
+                                         <p class='text-sm right-0'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="opacity-50 hover:opacity-100 pl-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                         </p>
                                     </li>
                                 </ul>
                                 <ul v-for='category in categories' :key=category >
-                                    <li class='py-1 rounded-md cursor-pointer duration-200 px-4 hover:text-nicegray-dark hover:bg-gray-400' > 
-                                        #{{category.name }} 
+                                    <li class='py-1 flex items-center justify-between rounded-md cursor-pointer duration-200 px-4 hover:text-nicegray-dark hover:bg-gray-400' > 
+                                        <p>#{{category.name }}</p>
+                                        <p class='text-sm right-0'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="opacity-50 hover:opacity-100 pl-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                         </p>
                                     </li>
                                 </ul>
 
@@ -148,20 +157,24 @@ export default {
 .fade-enter-from {
     opacity: 0;
     transform: translateY(-60px);
+    transform: scale(0.9)
 }
 .fade-enter-to {
     opacity: 1;
     transform: translateY(0px);
+    transform: scale(1)
 }
 .fade-enter-active {
     transition: all 0.2s ease-out; 
 }
 .fade-leave-from {
     opacity: 1;
+    transform: translateY(0px);
 }
 .fade-leave-to {
     opacity: 0;
     transform: translateY(-60px);
+    /* transform: scale(0.9) */
 }
 .fade-leave-active {
     transition: all 0.2s ease-out;
