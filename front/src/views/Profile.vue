@@ -1,12 +1,16 @@
 <template>
-  <div></div>
+  <div>
+
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'Profile',
-};
+    name: 'Profile',
+
+}
 </script>
 
 <style>
+
 </style>
