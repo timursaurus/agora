@@ -1,21 +1,21 @@
 <template>
-  <div id='app' class='min-h-screen text-md'>
-    <Nav />
-    <router-view v-slot="{Component}" >
-      <transition name='route' mode='out-in' >
-        <component :is='Component' ></component>
-      </transition>
-    </router-view>
-  </div>
+    <div id='app' class='min-h-screen text-md'>
+        <Nav />
+        <router-view v-slot="{Component}" >
+            <transition name='route' mode='out-in' >
+                <component :is='Component' ></component>
+            </transition>
+        </router-view>
+    </div>
 </template>
 
 <script>
 import Nav from '@/components/Nav'
 export default {
-  name: 'App',
-  components: {
-    Nav,
-  }
+    name: 'App',
+    components: {
+        Nav,
+    }
 
 }
 </script>

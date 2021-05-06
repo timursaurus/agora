@@ -50,7 +50,7 @@ export default {
         const model = reactive({ username: '', password: ''})
         function onSubmit() {
             store.dispatch('SignIn', model)
-            console.log(model)
+            //console.log(model)
         }
 
         return {

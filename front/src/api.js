@@ -18,7 +18,7 @@ const baseURL = 'http://127.0.0.1:8000/'
 const HTTP = axios.create({
     baseURL: baseURL,
     timeout: 5000,
-    // headers: { "Authorization": `Bearer ${store.state.accessToken}` },
+    // headers: { Authorization: `Bearer ${store.state.accessToken}` },
 })
 
 

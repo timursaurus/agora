@@ -13,7 +13,7 @@ const authGuard = (to, from, next) => {
     } else {
       next("/signin")
     }
-  };
+}
 
 
 const routes = [

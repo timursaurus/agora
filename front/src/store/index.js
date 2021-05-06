@@ -8,9 +8,12 @@ const store = createStore({
         refreshToken: null,
     },
     mutations: {
-        setToken: (state, model) => {
-            state.accessToken = model.access
-            state.refreshToken = model.refresh
+        setToken: (state, {access, refresh}) => {
+            state.accessToken = access
+            state.refreshToken = refresh
+
+            // console.log('setTokne')
+            // console.log(state.accessToken)
         },
         clearToken: (state) => {
             state.accessToken = null
@@ -28,6 +31,7 @@ const store = createStore({
             HTTP.post('api/token/', model)
             .then((res) => {
                 commit('setToken', res.data)
+                console.log('RECEIVED', res.data)
             })
         },
         SignOut: ({ commit }) => {
