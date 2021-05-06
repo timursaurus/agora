@@ -21,6 +21,20 @@ class CreateUser(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class BlacklistToken(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        try:
+            refreshToken = request.data['refreshToken']
+            token = RefreshToken(refreshToken)
+            token.blacklist()
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+
 # class BlacklistTokenUpdateView(APIView):
 #     permission_classes = [AllowAny]
 #     authentication_classes = ()

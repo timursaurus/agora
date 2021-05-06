@@ -5,14 +5,10 @@ import Home from '@/views/Home'
 import Signin from '@/views/Signin'
 import Signup from '@/views/Signup'
 import Profile from '@/views/Profile'
-import store from '@/store'
 
 const authGuard = (to, from, next) => {
-    if (store.getters.isAuthenticated) {
-      next();
-    } else {
-      next("/signin")
-    }
+    if (localStorage.getItem('accessToken')) next(); else next('/signin')
+    
 }
 
 
@@ -27,6 +23,7 @@ const routes = [
         name: 'Room',
         component: Room,
         props: true,
+        beforeEnter: authGuard
         // beforeEnter: (to, from, next) => {
         //     function isValid (param) {
         //         console.log(param)

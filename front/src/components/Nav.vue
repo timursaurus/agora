@@ -57,12 +57,12 @@
                 <div class='col-span-3 flex justify-end items-center' >
                     <router-link to='/signin' >
                         <!-- <h1  class='text-white text-2xl' >Login</h1> -->
-                        <div class='text-gray-400 text-lg bg-nicegray-light flex justify-center items-center px-6 h-12 max-w-full rounded-full hover:text-nicegray-dark hover:bg-gray-400' v-if='!isAuthenticated' >
+                        <div v-if='!isAuthenticated'  class='text-gray-400 text-lg bg-nicegray-light flex justify-center items-center px-6 h-12 max-w-full rounded-full hover:text-nicegray-dark hover:bg-gray-400' >
                             <button>Sign in</button>
                         </div>
                     </router-link>
-                    <span v-if="isAuthenticated">           
-                        <a class='text-white' href="#" @click.prevent="SignOut">Sign out</a>
+                    <span v-if='isAuthenticated'>           
+                        <button class='text-white' @click.prevent="Signout">Sign out</button>
                     </span>
                 </div>
             </div>
@@ -71,7 +71,6 @@
 </template>
 
 <script>
-import store from "@/store";
 import HTTP from '@/api'
 export default {
     name: 'Nav',
@@ -83,16 +82,6 @@ export default {
             rooms: [],
             users: [],
             categories: []
-        }
-    },
-    setup() {
-        return {
-            SignOut: () => store.dispatch('SignOut')
-        }
-    },
-    computed: {
-        isAuthenticated(){
-            return this.$store.getters.isAuthenticated
         }
     },
     methods: {
@@ -139,11 +128,25 @@ export default {
                 this.users = []
                 this.categories = []
             }, 300)
-            
+        },
+        isAuthenticated() {
+            if (localStorage.getItem('accessToken')) {
+                return true
+            } 
+        },
+        Signout() {
+
+            //
+            // BLACK LIST TOKEN HTTP.post('/logout/blacklist', {refreshToken: localStorage.getItem('refreshToken')})
+            //
+            localStorage.removeItem('accessToken')
+            localStorage.removeItem('refreshToken')
+            HTTP.defaults.headers['Authorization'] = null
         }
     },
     mounted() {
         this.Defaults()
+        this.isAuthenticated()
     }
     
     
