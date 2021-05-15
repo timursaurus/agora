@@ -13,7 +13,11 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      textOverflow: ['hover'],
+      borderWidth: ['hover', 'focus'],
+      width: ['hover']
+    },
   },
   plugins: [],
 }

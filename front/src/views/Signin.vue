@@ -34,7 +34,7 @@
 // import store from '@/store'
 import Footer from '@/components/Footer'
 import HTTP from '@/api'
-
+import router from '@/router'
 export default {
     name: 'Signin',
     data() {
@@ -72,6 +72,7 @@ export default {
                 localStorage.setItem('accessToken', res.data.access)
 				localStorage.setItem('refreshToken', res.data.refresh)
 				HTTP.defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('accessToken')
+                router.push('/')
             })
         }
         // Signin(){

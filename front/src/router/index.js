@@ -5,6 +5,8 @@ import Home from '@/views/Home'
 import Signin from '@/views/Signin'
 import Signup from '@/views/Signup'
 import Profile from '@/views/Profile'
+import EditRoom from '@/views/EditRoom'
+import CreateRoom from '@/views/CreateRoom'
 
 const authGuard = (to, from, next) => {
     if (localStorage.getItem('accessToken')) next(); else next('/signin')
@@ -24,17 +26,20 @@ const routes = [
         component: Room,
         props: true,
         beforeEnter: authGuard
-        // beforeEnter: (to, from, next) => {
-        //     function isValid (param) {
-        //         console.log(param)
-        //     }
-          
-        //     if (!isValid(to.params.code)) {
-        //         next({ name: '404' });
-        //     }
-          
-        //     else next();
-        // }
+    },
+    {
+        path: '/create',
+        name: 'CreateRoom',
+        component: CreateRoom,
+        props: true,
+        beforeEnter: authGuard
+    },
+    {
+        path: '/room/edit/:code',
+        name: 'EditRoom',
+        component: EditRoom,
+        props: true,
+        beforeEnter: authGuard
     },
     {
         path: '/:catchAll(.*)',

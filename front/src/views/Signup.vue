@@ -54,7 +54,7 @@ export default {
                     password: this.password,
                 }
 
-                HTTP.post('', data).then(res => {
+                HTTP.post('api/user/register/', data).then(res => {
                     console.log(res)
                 })
             }

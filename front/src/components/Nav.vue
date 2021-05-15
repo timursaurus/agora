@@ -2,7 +2,7 @@
     <nav class='bg-nicegray' >
         <div class="container mx-auto px-16">
             <div class="grid grid-cols-12 py-2 ">
-                <div class='col-span-3 block w-40 flex items-center '>
+                <div class='col-span-3 w-40 flex items-center '>
                     <router-link to='/' >
                         <h1 class='text-white text-3xl'>Agora</h1>
                     </router-link>
@@ -27,11 +27,11 @@
                                     </li>
                                 </ul>
                                 <ul v-for='room in rooms' :key=room >
-                                    <li class='py-1 flex items-center justify-between rounded-md cursor-pointer duration-200 px-4 hover:text-nicegray-dark hover:bg-gray-400' >
+                                    <li @click='JoinRoom(room.code)' class='py-1 flex items-center justify-between rounded-md cursor-pointer duration-200 px-4 hover:text-nicegray-dark hover:bg-gray-400' >
                                         <p>{{room.title }}</p> 
                                         <p class='text-sm right-0'>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="opacity-50 hover:opacity-100 pl-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-                                         </p>
+                                        </p>
                                     </li>
                                 </ul>
                                 <ul v-for='user in users' :key=user >
@@ -39,7 +39,7 @@
                                         <p>@{{user.username }}</p>
                                          <p class='text-sm right-0'>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="opacity-50 hover:opacity-100 pl-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-                                         </p>
+                                        </p>
                                     </li>
                                 </ul>
                                 <ul v-for='category in categories' :key=category >
@@ -47,7 +47,7 @@
                                         <p>#{{category.name }}</p>
                                         <p class='text-sm right-0'>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="opacity-50 hover:opacity-100 pl-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-                                         </p>
+                                        </p>
                                     </li>
                                 </ul>
                             </div>
@@ -57,7 +57,7 @@
                 <div class='col-span-3 flex justify-end items-center' >
                     <router-link to='/signin' >
                         <!-- <h1  class='text-white text-2xl' >Login</h1> -->
-                        <div v-if='!isAuthenticated'  class='text-gray-400 text-lg bg-nicegray-light flex justify-center items-center px-6 h-12 max-w-full rounded-full hover:text-nicegray-dark hover:bg-gray-400' >
+                        <div v-if='isAuthenticated'  class='text-gray-400 text-lg bg-nicegray-light flex justify-center items-center px-6 h-12 max-w-full rounded-full hover:text-nicegray-dark hover:bg-gray-400' >
                             <button>Sign in</button>
                         </div>
                     </router-link>
@@ -72,13 +72,14 @@
 
 <script>
 import HTTP from '@/api'
+import router from '@/router'
 export default {
     name: 'Nav',
     data() {
         return {
             search: '',
             searchmode: false,
-            hints: ['@user', '#category'],
+            hints: [],
             rooms: [],
             users: [],
             categories: []
@@ -91,7 +92,7 @@ export default {
                     HTTP.get('/api/user/?search=' + this.search.slice(1))
                     .then((res) => {
                         this.hints = []
-                        this.users = res.data 
+                        this.users = res.data
                     })
                 } else {
                     this.users = []
@@ -133,6 +134,9 @@ export default {
             if (localStorage.getItem('accessToken')) {
                 return true
             } 
+        },
+        JoinRoom(room) {
+            router.push('/room/' + room)
         },
         Signout() {
 

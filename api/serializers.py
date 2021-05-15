@@ -5,11 +5,11 @@ class RoomSerializer(serializers.ModelSerializer):
 
     # category_name = serializers.ReadOnlyField()
     # host_name = serializers.ReadOnlyField()
-    
+    category_name = serializers.ReadOnlyField(source='category.name')
+    host_name = serializers.ReadOnlyField(source='host.username')
     class Meta:
         model = Room
         fields = '__all__'
-        read_only_fields = ('host','category')
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import uuid, string, random
 from django.conf import settings
+from django.db.models.deletion import SET_NULL
 
 def gencode():
     k = 8
@@ -23,7 +24,7 @@ class BaseModel(models.Model):
 
 class Category(BaseModel):
     name = models.CharField(max_length=50)
-
+    
     class Meta:
         verbose_name_plural = 'Categories'
         verbose_name = 'Category'
@@ -44,7 +45,7 @@ class Room(BaseModel):
         def get_queryset(self):
             return super().get_queryset().filter(privacy='public')
 
-
+    
 
     title = models.CharField(max_length=255)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, default='')
@@ -53,7 +54,6 @@ class Room(BaseModel):
     description = models.TextField(blank=True)
     code = models.CharField(primary_key=True, max_length=8, default=gencode , unique=True)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
-
     objects = models.Manager()
     public_rooms = PublicRooms()
 
